@@ -38,3 +38,10 @@ variable "aws_eks_cluster_config" {
 variable "eks_node_group_config" {
   
 }
+
+variable "access_key"{
+   
+}
+variable "secret_key"{
+
+}
