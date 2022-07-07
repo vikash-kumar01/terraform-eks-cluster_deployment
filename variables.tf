@@ -45,6 +45,5 @@ variable "access_key"{
    
 }
 variable "secret_key"{
-      default = "aJ438liqNmxMHwP0ssqyiPkAcEyP/JwH/473hoE0
-"
+      default = "aJ438liqNmxMHwP0ssqyiPkAcEyP/JwH/473hoE0"
 }
