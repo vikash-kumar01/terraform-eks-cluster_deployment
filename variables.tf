@@ -39,11 +39,3 @@ variable "eks_node_group_config" {
   
 }
 
-variable "access_key"{
-  
-  default = "AKIA4NCU4ZH7SLIBWRVS"
-   
-}
-variable "secret_key"{
-      default = "aJ438liqNmxMHwP0ssqyiPkAcEyP/JwH/473hoE0"
-}
