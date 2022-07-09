@@ -203,30 +203,30 @@ aws_eks_cluster_config = {
 
 eks_node_group_config = {
 
-  "node1" = {
-
-        eks_cluster_name         = "demo-cluster"
-        node_group_name          = "node1"
-        nodes_iam_role           = "eks-node-group-general1"
-
-        private_subnet1          = "private-us-east-1a"
-        private_subnet2          = "private-us-east-1b"
-
-        tags = {
-             "Name" =  "node1"
-         } 
-  }
-#   "node2" = {
+#   "node1" = {
 
 #         eks_cluster_name         = "demo-cluster"
-#         node_group_name          = "node2"
-#         nodes_iam_role           = "eks-node-group-general2"
+#         node_group_name          = "node1"
+#         nodes_iam_role           = "eks-node-group-general1"
 
 #         private_subnet1          = "private-us-east-1a"
 #         private_subnet2          = "private-us-east-1b"
 
 #         tags = {
-#              "Name" =  "node2"
+#              "Name" =  "node1"
 #          } 
 #   }
+  "node2" = {
+
+        eks_cluster_name         = "demo-cluster"
+        node_group_name          = "node2"
+        nodes_iam_role           = "eks-node-group-general2"
+
+        private_subnet1          = "private-us-east-1a"
+        private_subnet2          = "private-us-east-1b"
+
+        tags = {
+             "Name" =  "node2"
+         } 
+  }
 }
