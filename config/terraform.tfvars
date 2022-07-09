@@ -216,17 +216,17 @@ eks_node_group_config = {
              "Name" =  "node1"
          } 
   }
-  "node2" = {
+#   "node2" = {
 
-        eks_cluster_name         = "demo-cluster"
-        node_group_name          = "node2"
-        nodes_iam_role           = "eks-node-group-general2"
+#         eks_cluster_name         = "demo-cluster"
+#         node_group_name          = "node2"
+#         nodes_iam_role           = "eks-node-group-general2"
 
-        private_subnet1          = "private-us-east-1a"
-        private_subnet2          = "private-us-east-1b"
+#         private_subnet1          = "private-us-east-1a"
+#         private_subnet2          = "private-us-east-1b"
 
-        tags = {
-             "Name" =  "node2"
-         } 
-  }
+#         tags = {
+#              "Name" =  "node2"
+#          } 
+#   }
 }
