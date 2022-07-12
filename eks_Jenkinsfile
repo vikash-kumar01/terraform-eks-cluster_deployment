@@ -46,9 +46,9 @@ pipeline {
                         } catch (err) {
                             sh "terraform workspace select ${params.WORKSPACE}"
                         }
+                        sh 'echo pwd'
                         sh "terraform plan --var-file=./config/terraform.tfvars -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
                         -out terraform.tfplan;echo \$? > status"
-                        echo pwd
                         stash name: "terraform-plan", includes: "terraform.tfplan"
                     }
                 }
