@@ -1,6 +1,7 @@
 pipeline {
     agent any
     parameters {
+        string(name: 'TARGET_ENV', defaultValue: 'PROD', description: 'Environment'  )
         string(name: 'WORKSPACE', defaultValue: 'development', description:'setting up workspace for terraform')
     }
     environment {
@@ -67,6 +68,20 @@ pipeline {
                     if(apply){
                             sh 'terraform apply --var-file=./config/terraform.tfvars --auto-aprove' 
                         }
+                }
+            }
+        }
+        stage('Init DownStreamJob for App Deployment'){
+            steps{
+                script{
+                    def releaseJob = build job: 'eks_app', propagate: false
+                    parameters:[
+                        [ $class: 'StringParameterValue', name: 'FROM_BUILD', value: "${BUILD_NUMBER}"  ],
+                        [ $class: 'BooleanParameterValue', name: 'IS_READY', value: true  ],
+                        ]
+                    if(releaseJob != "SUCCESS"){
+                        echo "Release Status: ${releaseJob.result}"
+                    }       
                 }
             }
         }
