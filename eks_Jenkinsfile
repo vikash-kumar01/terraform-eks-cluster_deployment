@@ -47,7 +47,7 @@ pipeline {
                             sh "terraform workspace select ${params.WORKSPACE}"
                         }
                         sh 'echo pwd'
-                        sh "terraform plan --var-file=./config/terraform.tfvars -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
+                        sh "terraform plan --var-file="./config/terraform.tfvars" -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
                         -out terraform.tfplan;echo \$? > status"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
                     }
@@ -69,7 +69,7 @@ pipeline {
                     if(apply){
                        dir('terraform-eks-cluster_deployment/'){
                             unstash "terraform-plan"
-                            sh 'terraform apply --var-file=./config/terraform.tfvars terraform.tfplan' 
+                            sh 'terraform apply --var-file="./config/terraform.tfvars" terraform.tfplan' 
                         }
                     }
                 }
