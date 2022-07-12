@@ -29,13 +29,13 @@ pipeline {
 
         stage('TerraformFormat'){
             steps {
-                    sh "terraform fmt -list=true -write=false -diff=true -check=true"
+                    sh 'terraform fmt'
             }
         }
 
         stage('TerraformValidate'){
             steps {
-                    sh "terraform validate"
+                    sh 'terraform validate'
             }
         }
 
