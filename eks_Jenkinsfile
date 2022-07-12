@@ -18,7 +18,7 @@ pipeline {
                      git 'https://github.com/vikash-kumar01/terraform-eks-cluster_deployment.git'
                 }
             }
-        }
+ 
             stage('TerraformInit'){
             steps {
                 dir('terraform-eks-cluster_deployment/'){
