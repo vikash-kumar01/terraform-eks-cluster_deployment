@@ -21,7 +21,7 @@ pipeline {
  
             stage('TerraformInit'){
             steps {
-                    sh "terraform init -input=false"
+                    sh 'terraform init'
                     sh "echo \$PWD"
                     sh "whoami"
             }
