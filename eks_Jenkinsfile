@@ -69,7 +69,7 @@ pipeline {
                     if(apply){
                        dir('terraform-eks-cluster_deployment/'){
                          //   unstash "terraform-plan"
-                            sh 'terraform apply --var-file="./config/terraform.tfvars" --auto-aprove' 
+                            sh 'terraform apply --var-file=./config/terraform.tfvars --auto-aprove' 
                         }
                     }
                 }
