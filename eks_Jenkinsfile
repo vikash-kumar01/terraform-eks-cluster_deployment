@@ -51,7 +51,7 @@ pipeline {
                         
                         terraform workspace select ${params.WORKSPACE}
                         
-                        terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}' --var-file=./config/terraform.tfvars -lock=false -var region=${params.region} \
+                        terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}' --var-file=./config/terraform.tfvars -lock=false -var 'region=${params.region}' \
                         -out terraform.tfplan;echo \$? > status
                         
                         """
@@ -74,7 +74,7 @@ pipeline {
                          currentBuild.result = 'UNSTABLE'
                     }
                     if(apply){
-                            sh "terraform apply -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}' --var-file=./config/terraform.tfvars region=${params.region} --auto-approve -lock=false"
+                            sh "terraform apply -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}' --var-file=./config/terraform.tfvars -var 'region=${params.region}' --auto-approve -lock=false"
                         }
                 }
             }
@@ -94,7 +94,7 @@ pipeline {
                          currentBuild.result = 'UNSTABLE'
                     }
                     if(destroy){
-                            sh "terraform destroy -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}'  --var-file=./config/terraform.tfvars --auto-approve -lock=false"
+                            sh "terraform destroy -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}' -var 'region=${params.region}' --var-file=./config/terraform.tfvars --auto-approve -lock=false"
                         }
                 }
         }
