@@ -5,6 +5,13 @@ variable "region" {
   type = string
 }
 
+ variable "cluster-name" {
+  description = "EKS cluster name."
+  default     = "demo-cluster"
+  type        = string
+}
+
+
 variable "vpc_config" {
   
 }
