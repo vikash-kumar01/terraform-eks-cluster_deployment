@@ -108,7 +108,7 @@ module "aws_eks_node_group" {
    for_each = var.eks_node_group_config
 
     node_group_name               = each.value.node_group_name
-    eks_cluster_name              = module.aws_eks_cluster[each.value.eks_cluster_name].eks_cluster_name
+    eks_cluster_name              = module.aws_eks_cluster[each.value.eks_cluster].eks_cluster_name
     subnet_ids                    = [module.aws_subnet[each.value.private_subnet1].subnet_id,module.aws_subnet[each.value.private_subnet2].subnet_id]
     nodes_iam_role                = each.value.nodes_iam_role
     tags                          = each.value.tags
