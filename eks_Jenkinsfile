@@ -1,6 +1,8 @@
 pipeline {
     agent any
     parameters {
+        choice(name: 'action', choices: 'create\ndestroy', description: 'Create/update or destroy the eks cluster.')
+        string(name: 'cluster', defaultValue : 'demo', description: "EKS cluster name.")
         string(name: 'TARGET_ENV', defaultValue: 'PROD', description: 'Environment'  )
         string(name: 'WORKSPACE', defaultValue: 'development', description:'setting up workspace for terraform')
     }
@@ -22,7 +24,7 @@ pipeline {
  
             stage('TerraformInit'){
             steps {
-                    sh 'terraform init'
+                    sh 'terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY" -input=false -reconfigure'
                     sh "echo \$PWD"
                     sh "whoami"
             }
@@ -43,18 +45,23 @@ pipeline {
         stage('TerraformPlan'){
             steps {
                     script {
-                        try {
-                            sh "terraform workspace new ${params.WORKSPACE}"
-                        } catch (err) {
-                            sh "terraform workspace select ${params.WORKSPACE}"
-                        }
-                        sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' --var-file=./config/terraform.tfvars \
-                        -out terraform.tfplan;echo \$? > status"
+                        sh """
+                        terraform workspace new ${params.WORKSPACE} || true
+                        
+                        terraform workspace select ${params.WORKSPACE}
+                        
+                        terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}' --var-file=./config/terraform.tfvars -lock=false \
+                        -out terraform.tfplan;echo \$? > status
+                        
+                        """
                     }
             }
         }
         
         stage('TerraformApply'){
+            when {
+              expression { params.action == 'create' }
+          }
             steps {
                 script{
                     def apply = false
@@ -66,11 +73,32 @@ pipeline {
                          currentBuild.result = 'UNSTABLE'
                     }
                     if(apply){
-                            sh "terraform apply -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' --var-file=./config/terraform.tfvars --auto-approve"
+                            sh "terraform apply -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}' --var-file=./config/terraform.tfvars --auto-approve -lock=false"
                         }
                 }
             }
         }
+        stage('Terraform Destroy'){
+            when {
+               expression { params.action == 'destroy' }
+             }
+            steps {
+                script{
+                    def destroy = false
+                    try {
+                        input message: 'Can you please confirm the destroy ?', ok: 'Ready to Apply the Config'
+                        destroy = true
+                    } catch (err) {
+                        destroy = false
+                         currentBuild.result = 'UNSTABLE'
+                    }
+                    if(destroy){
+                            sh "terraform destroy -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'cluster-name=${params.cluster}'  --var-file=./config/terraform.tfvars --auto-approve -lock=false"
+                        }
+                }
+        }
+        }
+          
         stage('Init DownStreamJob for App Deployment'){
             steps{
                 script{
