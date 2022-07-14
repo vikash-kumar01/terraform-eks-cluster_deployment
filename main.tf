@@ -96,7 +96,7 @@ module "aws_eks_cluster" {
   
    for_each = var.aws_eks_cluster_config
 
-    eks_cluster_name              = each.value.eks_cluster_name 
+    eks_cluster_name              = var.cluster-name 
     subnet_ids                    = [module.aws_subnet[each.value.subnet1].subnet_id,module.aws_subnet[each.value.subnet2].subnet_id,module.aws_subnet[each.value.subnet3].subnet_id,module.aws_subnet[each.value.subnet4].subnet_id ]
     tags                          = each.value.tags
 }
