@@ -185,7 +185,7 @@ route_table_association_config = {
 
 aws_eks_cluster_config = {
 
-      "demo-cluster" = {        
+      "01" = {        
 
         subnet1 = "public-us-east-1a"
         subnet2 = "public-us-east-1b"
@@ -201,7 +201,7 @@ aws_eks_cluster_config = {
 eks_node_group_config = {
 
 #   "node1" = {
-
+#          eks_cluster             = "01"
 #         node_group_name          = "node1"
 #         nodes_iam_role           = "eks-node-group-general1"
 
@@ -213,7 +213,7 @@ eks_node_group_config = {
 #          } 
 #   }
   "node2" = {
-
+        eks_cluster             = "01"
         node_group_name          = "node2"
         nodes_iam_role           = "eks-node-group-general2"
 
